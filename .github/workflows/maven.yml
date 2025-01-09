@@ -88,6 +88,7 @@ jobs:
     - uses: tale/kubectl-action@v1
       with:
         base64-kube-config: ${{ env.KUBE_CONFIG}}
+        kubectl-version: v1.22.9
     - run: |
           kubectl apply -f deployment-service.yaml -n webapps 
           kubectl get svc -n webapps
