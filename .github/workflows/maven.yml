@@ -80,7 +80,7 @@ jobs:
         role-to-assume: arn:aws:iam::241533149876:role/github_role
         aws-region: eu-west-3
     - name: Generate kubeconfig
-      run: echo "EKS_CREDS=$(aws eks update-kubeconfig --region eu-west-3 --name eks-cluster --dry-run | base64)" >> $GITHUB_ENV
+      run: EKS_CREDS=$(aws eks update-kubeconfig --region eu-west-3 --name eks-cluster --dry-run | base64)
     - uses: tale/kubectl-action@v1
       with:
         base64-kube-config: ${{ env.EKS_CREDS }}
