@@ -13,7 +13,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: self-hosted
 
@@ -74,6 +74,10 @@ jobs:
       run: |
           docker push 201820192020/boardgame:latest
 
+  deploy:
+    runs-on: self-hosted
+
+    steps:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
