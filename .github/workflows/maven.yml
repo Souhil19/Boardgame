@@ -70,10 +70,16 @@ jobs:
       run: |
           docker push 201820192020/boardgame:latest
 
-    - name: Kubectl Action
-      uses: tale/kubectl-action@v1
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+        role-to-assume: arn:aws:iam::123456789100:role/my-github-actions-role 
+        aws-region: eu-west-3
+    - name: Generate kubeconfig
+      run: echo "EKS_CREDS=$(aws eks update-kubeconfig --region eu-west-3 --name eks-cluster --dry-run | base64) >> $GITHUB_ENV
+    - uses: tale/kubectl-action@v1
+      with:
+        base64-kube-config: ${{ env.EKS_CREDS }}
     - run: |
           kubectl apply -f deployment-service.yaml -n webapps 
           kubectl get svc -n webapps
